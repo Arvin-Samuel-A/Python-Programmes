@@ -17,7 +17,7 @@
             <th>Marks</th>
         </tr>
 
-        {% for row in Data %}
+        {% for row in data %}
 
         <tr>
             <td>{{row[0]}}</td>
@@ -29,11 +29,11 @@
 
         <tr>
             <td colspan = "2" style="text-align:center"> Total Marks </td>
-            <td>total_marks_data</td>
+            <td>{{total_marks_data}}</td>
         </tr>
 
     </table>
 
-    <a href = "/">Go Back</a>
+    <p><a href = "/">Go Back</a></p>
 
 </body>

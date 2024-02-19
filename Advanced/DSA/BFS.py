@@ -1,6 +1,11 @@
-from Advanced.DSA.Queue import Queue
+import sys
+import numpy as np
 
-def Neighbours(Adj_Mat, Value):
+sys.path.insert(0, "Advanced/DSA")
+
+from Queue import Queue
+
+def Neighbours(Adj_Mat : np.array, Value : int):
 
     Neigh=[]
 
@@ -13,7 +18,7 @@ def Neighbours(Adj_Mat, Value):
     return Neigh
 
 
-def BFS_AM(Adj_Mat, Value):
+def BFS_AM(Adj_Mat : np.array, Value : int):
 
     (Rows, Cols)=Adj_Mat.shape
     Visited, Parent, Level = {}, {}, {}
@@ -48,7 +53,7 @@ def BFS_AM(Adj_Mat, Value):
     return Visited, Parent, Level
 
 
-def BFS_AL(Adj_List, Value):
+def BFS_AL(Adj_List : dict, Value : int):
 
     Visited, Parent, Level = {}, {}, {}
 
@@ -56,6 +61,7 @@ def BFS_AL(Adj_List, Value):
 
         Visited[x]=False
         Parent[x]=-1
+        Level[x]=-1
 
     Q=Queue()
 
@@ -79,3 +85,10 @@ def BFS_AL(Adj_List, Value):
                 Q.Put(y)
 
     return Visited, Parent, Level
+
+
+Adj_Mat = np.array([[0, 1, 1, 1, 0], [1, 0, 0, 0, 0], [1, 0, 0, 1, 1], [1, 0, 1, 0, 0], [0, 0, 1, 0, 0]])
+print(BFS_AM(Adj_Mat, 0))
+
+Adj_List={0:[1, 2, 3], 1:[0], 2:[0, 3, 4], 3:[0, 2], 4:[2]}
+print(BFS_AL(Adj_List, 0))

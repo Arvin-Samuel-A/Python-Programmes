@@ -79,14 +79,26 @@ def DFS_AL(Adj_List : dict, Value : int):
     return
 
 
-Adj_Mat = np.array([[0, 1, 1, 1, 0], [1, 0, 0, 0, 0], [1, 0, 0, 1, 1], [1, 0, 1, 0, 0], [0, 0, 1, 0, 0]])
+Adj_Mat = np.array([
+    [0, 1, 1, 1, 0], # Node 0
+    [1, 0, 0, 0, 0], # Node 1
+    [1, 0, 0, 1, 1], # Node 2
+    [1, 0, 1, 0, 0], # Node 3
+    [0, 0, 1, 0, 0]  # Node 4
+])
 
 DFS_AM_Initialization(Adj_Mat, 0)
 DFS_AM(Adj_Mat, 0)
 
 print(Visited, Parent, Level)
 
-Adj_List={0:[1, 2, 3], 1:[0], 2:[0, 3, 4], 3:[0, 2], 4:[2]}
+Adj_List={
+    0:[1, 2, 3], 
+    1:[0], 
+    2:[0, 3, 4], 
+    3:[0, 2], 
+    4:[2]
+}
 
 DFS_AL_Initialization(Adj_List, 0)
 DFS_AL(Adj_List, 0)

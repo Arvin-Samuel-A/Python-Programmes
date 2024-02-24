@@ -1,9 +1,7 @@
-import sys
 import numpy as np
-
-sys.path.insert(0, "Advanced/DSA")
-
 from Queue import Queue
+
+Visited, Parent, Level = {}, {}, {}
 
 def Neighbours(Adj_Mat : np.array, Value : int):
 
@@ -17,17 +15,21 @@ def Neighbours(Adj_Mat : np.array, Value : int):
 
     return Neigh
 
-
-def BFS_AM(Adj_Mat : np.array, Value : int):
+def BFS_AM_Initialization(Adj_Mat : np.array):
 
     (Rows, Cols)=Adj_Mat.shape
-    Visited, Parent, Level = {}, {}, {}
+    
 
     for x in range(Rows):
 
         Visited[x]=False
         Parent[x]=-1
         Level[x]=-1
+
+
+def BFS_AM(Adj_Mat : np.array, Value : int):
+
+    BFS_AM_Initialization(Adj_Mat)
 
     Q=Queue()
 
@@ -50,18 +52,21 @@ def BFS_AM(Adj_Mat : np.array, Value : int):
                 
                 Q.Put(y)
 
-    return Visited, Parent, Level
+    return
 
 
-def BFS_AL(Adj_List : dict, Value : int):
-
-    Visited, Parent, Level = {}, {}, {}
+def BFS_Al_Initialization(Adj_List : dict):
 
     for x in Adj_List.keys():
 
         Visited[x]=False
         Parent[x]=-1
         Level[x]=-1
+
+
+def BFS_AL(Adj_List : dict, Value : int):
+
+    BFS_Al_Initialization(Adj_List)
 
     Q=Queue()
 
@@ -84,11 +89,27 @@ def BFS_AL(Adj_List : dict, Value : int):
 
                 Q.Put(y)
 
-    return Visited, Parent, Level
+    return
 
 
-Adj_Mat = np.array([[0, 1, 1, 1, 0], [1, 0, 0, 0, 0], [1, 0, 0, 1, 1], [1, 0, 1, 0, 0], [0, 0, 1, 0, 0]])
-print(BFS_AM(Adj_Mat, 0))
+Adj_Mat = np.array([
+    [0, 1, 1, 1, 0], # Node 0
+    [1, 0, 0, 0, 0], # Node 1
+    [1, 0, 0, 1, 1], # Node 2
+    [1, 0, 1, 0, 0], # Node 3
+    [0, 0, 1, 0, 0]  # Node 4
+])
 
-Adj_List={0:[1, 2, 3], 1:[0], 2:[0, 3, 4], 3:[0, 2], 4:[2]}
-print(BFS_AL(Adj_List, 0))
+BFS_AM(Adj_Mat, 0)
+print(Visited, Parent, Level)
+
+Adj_List={
+    0:[1, 2, 3], 
+    1:[0], 
+    2:[0, 3, 4], 
+    3:[0, 2], 
+    4:[2]
+}
+
+BFS_AL(Adj_List, 0)
+print(Visited, Parent, Level)

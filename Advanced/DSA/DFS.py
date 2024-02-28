@@ -15,7 +15,7 @@ def Neighbours(Adj_Mat : np.array, Value : int):
     return Neigh
 
 
-def DFS_AM_Initialization(Adj_Mat : np.array, Value : int):
+def DFS_AM_Initialization(Adj_Mat : np.array, Start : int):
 
     (Rows, Cols) = Adj_Mat.shape
 
@@ -25,12 +25,12 @@ def DFS_AM_Initialization(Adj_Mat : np.array, Value : int):
         Parent[x]=-1
         Level[x]=-1
 
-    Level[Value]=0
+    Level[Start]=0
 
     return
 
 
-def DFS_AL_Initialization(Adj_List : dict, Value : int):
+def DFS_AL_Initialization(Adj_List : dict, Start : int):
 
     for x in Adj_List.keys():
 
@@ -38,41 +38,41 @@ def DFS_AL_Initialization(Adj_List : dict, Value : int):
         Parent[x]=-1
         Level[x]=-1
 
-    Level[Value]=0
+    Level[Start]=0
 
     return
 
 
-def DFS_AM(Adj_Mat : np.array, Value : int):
+def DFS_AM(Adj_Mat : np.array, Start : int):
 
     global Visited, Parent, Level
 
-    Visited[Value]=True
+    Visited[Start]=True
 
-    for x in Neighbours(Adj_Mat, Value):
+    for x in Neighbours(Adj_Mat, Start):
 
         if (not Visited[x]):
 
-            Parent[x]=Value
-            Level[x]=Level[Value]+1
+            Parent[x]=Start
+            Level[x]=Level[Start]+1
 
             DFS_AM(Adj_Mat, x)
 
     return
 
 
-def DFS_AL(Adj_List : dict, Value : int):
+def DFS_AL(Adj_List : dict, Start : int):
 
     global Visited, Parent, Level
 
-    Visited[Value]=True
+    Visited[Start]=True
 
-    for x in Adj_List[Value]:
+    for x in Adj_List[Start]:
 
         if (not Visited[x]):
 
-            Parent[x]=Value
-            Level[x]=Level[Value]+1
+            Parent[x]=Start
+            Level[x]=Level[Start]+1
 
             DFS_AL(Adj_List, x)
 

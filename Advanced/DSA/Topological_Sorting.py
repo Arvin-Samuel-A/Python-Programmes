@@ -68,7 +68,7 @@ def Topological_Sorting_AL(Adj_List : dict):
 
     Zero_In=Queue()
 
-    for x in Adj_List.keys():
+    for x in Adj_List:
 
         if (In_Degree[x]==0):
 

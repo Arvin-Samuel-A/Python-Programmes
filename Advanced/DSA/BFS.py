@@ -3,18 +3,6 @@ from Queue import Queue
 
 Visited, Parent, Level = {}, {}, {}
 
-def Neighbours(Adj_Mat : np.array, Value : int):
-
-    Neigh=[]
-
-    for x in range(len(Adj_Mat[Value])):
-
-        if Adj_Mat[Value][x]:
-
-            Neigh.append(x)
-
-    return Neigh
-
 def BFS_AM_Initialization(Adj_Mat : np.array):
 
     (Rows, Cols)=Adj_Mat.shape
@@ -26,25 +14,38 @@ def BFS_AM_Initialization(Adj_Mat : np.array):
         Parent[x]=-1
         Level[x]=-1
 
+    return
 
-def BFS_AM(Adj_Mat : np.array, Value : int):
+
+def BFS_AL_Initialization(Adj_List : dict):
+
+    for x in Adj_List.keys():
+
+        Visited[x]=False
+        Parent[x]=-1
+        Level[x]=-1
+
+    return
+
+
+def BFS_AM(Adj_Mat : np.array, Start : int):
 
     BFS_AM_Initialization(Adj_Mat)
 
     Q=Queue()
 
-    Visited[Value]=True
-    Level[Value]=0
+    Visited[Start]=True
+    Level[Start]=0
 
-    Q.Put(Value)
+    Q.Put(Start)
 
     while (not Q.isempty()):
 
         Var=Q.Get()
 
-        for y in Neighbours(Adj_Mat, Var):
+        for y in range(Visited):
 
-            if (not Visited[y]):
+            if (Adj_Mat[Var][y] and not Visited[y]):
 
                 Level[y]=Level[Var]+1
                 Visited[y]=True
@@ -55,25 +56,16 @@ def BFS_AM(Adj_Mat : np.array, Value : int):
     return
 
 
-def BFS_Al_Initialization(Adj_List : dict):
+def BFS_AL(Adj_List : dict, Start : int):
 
-    for x in Adj_List.keys():
-
-        Visited[x]=False
-        Parent[x]=-1
-        Level[x]=-1
-
-
-def BFS_AL(Adj_List : dict, Value : int):
-
-    BFS_Al_Initialization(Adj_List)
+    BFS_AL_Initialization(Adj_List)
 
     Q=Queue()
 
-    Visited[Value]=True
-    Level[Value]=0
+    Visited[Start]=True
+    Level[Start]=0
 
-    Q.Put(Value)
+    Q.Put(Start)
 
     while (not Q.isempty()):
 

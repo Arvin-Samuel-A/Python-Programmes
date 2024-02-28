@@ -40,19 +40,19 @@ def DFS_Pre_Post_Initialization(Adj_List : dict):
 
     return
 
-def DFS_Pre_Post(Adj_List : dict, Value : int, Count : int):
+def DFS_Pre_Post(Adj_List : dict, Start : int, Count : int):
 
-    Visited[Value]=True
-    Pre[Value]=Count
+    Visited[Start]=True
+    Pre[Start]=Count
     Count+=1
 
-    for x in Adj_List[Value]:
+    for x in Adj_List[Start]:
 
         if (not Visited[x]):
 
             Count=DFS_Pre_Post(Adj_List, x, Count)
 
-    Post[Value]=Count
+    Post[Start]=Count
     Count+=1
 
     return Count

@@ -49,8 +49,11 @@ def Merge_Sort(List):
 
     return Result
 
-List=eval(input("Enter the List of Elements to be Sorted : "))
 
-print()
+if __name__=="__main__":
+   
+    List=eval(input("Enter the List of Elements to be Sorted : "))
 
-print("The Sorted List is : ", Merge_Sort(List))
+    print()
+
+    print("The Sorted List is : ", Merge_Sort(List))

@@ -1,6 +1,6 @@
 import numpy as np
 
-Visited, Distance = {}, {}
+Visited, Distance, Neighbour = {}, {}, {}
 
 def Closest_Neighbour():
 
@@ -25,66 +25,82 @@ def WAM_Initialize(W_Adj_Mat : np.array):
 
     for x in range(Rows):
 
-        Distance[x]=float("inf")
         Visited[x]=False
+        Distance[x]=float("inf")
+        Neighbour[x]=-1
+
+    Visited[0]=True
+
+    for x in range(len(W_Adj_Mat)):
+
+        if (W_Adj_Mat[0, x, 0]):
+
+            Distance[x]=W_Adj_Mat[0, x, 1]
+            Neighbour[x]=0
 
     return
 
 
-def WAL_Initialize(Adj_List : dict):
+def WAL_Initialize(W_Adj_List : dict):
 
-    for x in Adj_List.keys():
+    for x in W_Adj_List.keys():
 
-        Distance[x]=float("inf")
         Visited[x]=False
+        Distance[x]=float("inf")
+        Neighbour[x]=-1
+
+    Visited[0]=True
+
+    for v, w in W_Adj_List[0]:
+
+        Distance[v]=w
+        Neighbour[v]=0
 
     return
 
 
-def Dijkstra_Algorithm_WAM(W_Adj_Mat : np.array, Start : int):
+def Prim_Algorithm_WAM(W_Adj_Mat : np.array):
 
     WAM_Initialize(W_Adj_Mat)
 
-    Distance[Start]=0
-
     Closest=Closest_Neighbour()
-    
+
     while(Closest is not None):
-        
+
         Visited[Closest]=True
 
-        for x in Distance:
+        for x in range(len(W_Adj_Mat)):
 
             if (W_Adj_Mat[Closest, x, 0] and not Visited[x]):
-                
-                Distance[x]=min(Distance[x], Distance[Closest]+W_Adj_Mat[Closest, x, 1])
+
+                Distance[x]=min(Distance[x], W_Adj_Mat[Closest, x, 1])
+                Neighbour[x]=Closest
 
         Closest=Closest_Neighbour()
 
-    return Distance
+    return Neighbour
 
 
-def Dijkstra_Algorithm_WAL(Adj_List : dict, Start : int):
+def Prim_Algorithm_WAL(W_Adj_List : dict):
 
-    WAL_Initialize(Adj_List)
+    WAL_Initialize(W_Adj_List)
 
-    Distance[Start]=0
-    
     Closest=Closest_Neighbour()
 
-    while(Closest!=None):
+    while(Closest is not None):
 
         Visited[Closest]=True
 
-        for x in Adj_List[Closest]:
+        for v, w in W_Adj_List[Closest]:
 
-            if(not Visited[x[0]]):
+            if (not Visited[v]):
 
-                Distance[x[0]]=min(Distance[x[0]], Distance[Closest]+x[1])
-                
+                Distance[v]=min(Distance[v], w)
+                Neighbour[v]=Closest
+
         Closest=Closest_Neighbour()
 
-    return Distance
+    return Neighbour
 
 
 if __name__=="__main__":
@@ -110,8 +126,8 @@ if __name__=="__main__":
             W_Adj_Mat[vertex, neighbor, 0] = 1
             W_Adj_Mat[vertex, neighbor, 1] = weight
 
-    Dijkstra_Algorithm_WAM(W_Adj_Mat, 0)
-    print(Distance)
+    Prim_Algorithm_WAM(W_Adj_Mat)
+    print(Neighbour)
 
-    Dijkstra_Algorithm_WAL(W_Adj_List, 0)
-    print(Distance)
+    Prim_Algorithm_WAL(W_Adj_List)
+    print(Neighbour)

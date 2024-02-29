@@ -38,7 +38,7 @@ def Bellman_Ford_Algorithm_WAM(W_Adj_Mat : np.array, Start : int):
 
                     Distance[z]=min(Distance[z], Distance[y]+W_Adj_Mat[y][z][1])
 
-    return
+    return Distance
 
 
 def Bellman_Ford_Algorithm_WAL(Adj_List : dict, Start : int):
@@ -55,31 +55,34 @@ def Bellman_Ford_Algorithm_WAL(Adj_List : dict, Start : int):
 
                 Distance[z[0]]=min(Distance[z[0]], Distance[y]+z[1])
 
-    return
+    return Distance
 
-W_Adj_List={
 
-    0: [(1, 10), (5, 8)],
-    1: [(2, 1), (3, -2)],
-    2: [],
-    3: [(4, -1)],
-    4: [(5, -1)],
-    5: [(6, -1)],
-    6: [(0, 8)]
+if __name__=="__main__":
 
-}
+    W_Adj_List={
 
-num_vertices = len(W_Adj_List)
+        0: [(1, 10), (5, 8)],
+        1: [(2, 1), (3, -2)],
+        2: [],
+        3: [(4, -1)],
+        4: [(5, -1)],
+        5: [(6, -1)],
+        6: [(0, 8)]
 
-W_Adj_Mat = np.zeros((num_vertices, num_vertices, 2), dtype=int)
+    }
 
-for vertex, neighbors in W_Adj_List.items():
-    for neighbor, weight in neighbors:
-        W_Adj_Mat[vertex, neighbor, 0] = 1
-        W_Adj_Mat[vertex, neighbor, 1] = weight
+    num_vertices = len(W_Adj_List)
 
-Bellman_Ford_Algorithm_WAM(W_Adj_Mat, 0)
-print(Distance)
+    W_Adj_Mat = np.zeros((num_vertices, num_vertices, 2), dtype=int)
 
-Bellman_Ford_Algorithm_WAL(W_Adj_List, 0)
-print(Distance)
+    for vertex, neighbors in W_Adj_List.items():
+        for neighbor, weight in neighbors:
+            W_Adj_Mat[vertex, neighbor, 0] = 1
+            W_Adj_Mat[vertex, neighbor, 1] = weight
+
+    Bellman_Ford_Algorithm_WAM(W_Adj_Mat, 0)
+    print(Distance)
+
+    Bellman_Ford_Algorithm_WAL(W_Adj_List, 0)
+    print(Distance)

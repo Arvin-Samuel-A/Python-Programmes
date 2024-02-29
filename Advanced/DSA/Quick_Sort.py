@@ -29,8 +29,10 @@ def Quick_Sort(List, Start, End):
     return List
 
 
-List=eval(input("Enter the List of Elements to be Sorted : "))
+if __name__=="__main__":
+   
+    List=eval(input("Enter the List of Elements to be Sorted : "))
 
-print()
+    print()
 
-print("The Sorted List is : ", Quick_Sort(List, 0, len(List)))
+    print("The Sorted List is : ", Quick_Sort(List, 0, len(List)))

@@ -93,24 +93,26 @@ def Topological_Sorting_AL(Adj_List : dict):
     return Sort_List, Longest_Path
 
 
-Adj_Mat = np.array([
-    [0, 1, 1, 0, 0, 0],  # Node 0
-    [0, 0, 0, 1, 0, 0],  # Node 1
-    [0, 0, 0, 0, 1, 0],  # Node 2
-    [0, 0, 0, 0, 0, 1],  # Node 3
-    [0, 0, 0, 0, 0, 1],  # Node 4
-    [0, 0, 0, 0, 0, 0]   # Node 5
-])
+if __name__=="__main__":
+   
+    Adj_Mat = np.array([
+        [0, 1, 1, 0, 0, 0],  # Node 0
+        [0, 0, 0, 1, 0, 0],  # Node 1
+        [0, 0, 0, 0, 1, 0],  # Node 2
+        [0, 0, 0, 0, 0, 1],  # Node 3
+        [0, 0, 0, 0, 0, 1],  # Node 4
+        [0, 0, 0, 0, 0, 0]   # Node 5
+    ])
 
-print(Topological_Sorting_AM(Adj_Mat))
+    print(Topological_Sorting_AM(Adj_Mat))
 
-Adj_List={
-    0: [1, 2],
-    1: [3],
-    2: [4],
-    3: [5],
-    4: [5],
-    5: []
-}
+    Adj_List={
+        0: [1, 2],
+        1: [3],
+        2: [4],
+        3: [5],
+        4: [5],
+        5: []
+    }
 
-print(Topological_Sorting_AL(Adj_List))
+    print(Topological_Sorting_AL(Adj_List))

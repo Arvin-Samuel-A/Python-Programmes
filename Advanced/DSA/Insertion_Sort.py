@@ -26,9 +26,11 @@ def Insertion_Sort(List):
 
     return List
 
-    
-List=eval(input("Enter the List of Elements to be Sorted : "))
 
-print()
+if __name__=="__main__":
+       
+    List=eval(input("Enter the List of Elements to be Sorted : "))
 
-print("The Sorted List is : ", Insertion_Sort(List))
+    print()
+
+    print("The Sorted List is : ", Insertion_Sort(List))

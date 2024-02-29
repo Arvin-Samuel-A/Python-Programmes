@@ -16,9 +16,11 @@ def Bubble_Sort(List, Len):
     return Bubble_Sort(List, Len-1)
 
 
-List=eval(input("Enter the List of Elements to be Sorted : "))
-Len=len(List)
+if __name__=="__main__":
 
-print()
+    List=eval(input("Enter the List of Elements to be Sorted : "))
+    Len=len(List)
 
-print("The Sorted List is : ", Bubble_Sort(List, Len))
+    print()
+
+    print("The Sorted List is : ", Bubble_Sort(List, Len))

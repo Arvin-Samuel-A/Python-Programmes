@@ -53,7 +53,7 @@ def BFS_AM(Adj_Mat : np.array, Start : int):
                 
                 Q.Put(y)
 
-    return
+    return Visited, Parent, Level
 
 
 def BFS_AL(Adj_List : dict, Start : int):
@@ -81,27 +81,29 @@ def BFS_AL(Adj_List : dict, Start : int):
 
                 Q.Put(y)
 
-    return
+    return Visited, Parent, Level
 
 
-Adj_Mat = np.array([
-    [0, 1, 1, 1, 0], # Node 0
-    [1, 0, 0, 0, 0], # Node 1
-    [1, 0, 0, 1, 1], # Node 2
-    [1, 0, 1, 0, 0], # Node 3
-    [0, 0, 1, 0, 0]  # Node 4
-])
+if __name__=="__main__":
+    
+    Adj_Mat = np.array([
+        [0, 1, 1, 1, 0], # Node 0
+        [1, 0, 0, 0, 0], # Node 1
+        [1, 0, 0, 1, 1], # Node 2
+        [1, 0, 1, 0, 0], # Node 3
+        [0, 0, 1, 0, 0]  # Node 4
+    ])
 
-BFS_AM(Adj_Mat, 0)
-print(Visited, Parent, Level)
+    BFS_AM(Adj_Mat, 0)
+    print(Visited, Parent, Level)
 
-Adj_List={
-    0:[1, 2, 3], 
-    1:[0], 
-    2:[0, 3, 4], 
-    3:[0, 2], 
-    4:[2]
-}
+    Adj_List={
+        0:[1, 2, 3], 
+        1:[0], 
+        2:[0, 3, 4], 
+        3:[0, 2], 
+        4:[2]
+    }
 
 BFS_AL(Adj_List, 0)
 print(Visited, Parent, Level)

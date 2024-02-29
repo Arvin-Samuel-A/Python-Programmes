@@ -10,7 +10,7 @@ def Initialize(W_Adj_Mat : np.array):
 
        for y in range(Cols):
 
-        if W_Adj_Mat[x, y, 0]:
+        if (W_Adj_Mat[x, y, 0]):
 
             Shortest_Path[x, y, 0]=W_Adj_Mat[x, y, 1]
 
@@ -34,25 +34,27 @@ def Floyd_Warshall_Algorithm(W_Adj_Mat : np.array):
     return Shortest_Path[:, :, Len]
 
 
-W_Adj_List={
+if __name__=="__main__":
 
-    0: [(1, 10), (5, 8)],
-    1: [(2, 1), (3, -2)],
-    2: [],
-    3: [(4, -1)],
-    4: [(5, -1)],
-    5: [(6, -1)],
-    6: [(0, 8)]
+    W_Adj_List={
 
-}
+        0: [(1, 10), (5, 8)],
+        1: [(2, 1), (3, -2)],
+        2: [],
+        3: [(4, -1)],
+        4: [(5, -1)],
+        5: [(6, -1)],
+        6: [(0, 8)]
 
-num_vertices = len(W_Adj_List)
+    }
 
-W_Adj_Mat = np.zeros((num_vertices, num_vertices, 2), dtype=int)
+    num_vertices = len(W_Adj_List)
 
-for vertex, neighbors in W_Adj_List.items():
-    for neighbor, weight in neighbors:
-        W_Adj_Mat[vertex, neighbor, 0] = 1
-        W_Adj_Mat[vertex, neighbor, 1] = weight
+    W_Adj_Mat = np.zeros((num_vertices, num_vertices, 2), dtype=int)
 
-print(Floyd_Warshall_Algorithm(W_Adj_Mat))
+    for vertex, neighbors in W_Adj_List.items():
+        for neighbor, weight in neighbors:
+            W_Adj_Mat[vertex, neighbor, 0] = 1
+            W_Adj_Mat[vertex, neighbor, 1] = weight
+
+    print(Floyd_Warshall_Algorithm(W_Adj_Mat))

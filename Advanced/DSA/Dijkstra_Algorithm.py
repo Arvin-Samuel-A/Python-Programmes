@@ -52,11 +52,11 @@ def Dijkstra_Algorithm_WAM(W_Adj_Mat : np.array, Start : int):
         
         Visited[Closest]=True
 
-        for x in range(Distance):
+        for x in Distance:
 
-            if (W_Adj_Mat[Closest][x][0] and not Visited[x]):
+            if (W_Adj_Mat[Closest, x, 0] and not Visited[x]):
                 
-                Distance[x]=min(Distance[x], Distance[Closest]+W_Adj_Mat[Closest][x][1])
+                Distance[x]=min(Distance[x], Distance[Closest]+W_Adj_Mat[Closest, x, 1])
 
         Closest=Closest_Neighbour()
 

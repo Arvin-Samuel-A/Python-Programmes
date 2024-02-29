@@ -1,6 +1,6 @@
 import numpy as np
 
-Distance = {}, {}
+Distance = {}
 
 def WAM_Initialize(W_Adj_Mat : np.array):
 
@@ -13,9 +13,9 @@ def WAM_Initialize(W_Adj_Mat : np.array):
     return
 
 
-def WAL_Initialize(Adj_List : dict):
+def WAL_Initialize(W_Adj_List : dict):
 
-    for x in Adj_List.keys():
+    for x in W_Adj_List.keys():
 
         Distance[x]=float("inf")
 
@@ -28,11 +28,11 @@ def Bellman_Ford_Algorithm_WAM(W_Adj_Mat : np.array, Start : int):
 
     Distance[Start]=0
     
-    for x in range(Distance):
+    for x in Distance:
 
-        for y in range(Distance):
+        for y in Distance:
 
-            for z in range(Distance):
+            for z in Distance:
 
                 if (W_Adj_Mat[y][z][0]):
 
@@ -53,7 +53,7 @@ def Bellman_Ford_Algorithm_WAL(Adj_List : dict, Start : int):
 
             for z in W_Adj_List[y]:
 
-                Distance[z[[0]]]=min(Distance[z[0]], Distance[y]+z[1])
+                Distance[z[0]]=min(Distance[z[0]], Distance[y]+z[1])
 
     return
 
@@ -61,11 +61,11 @@ W_Adj_List={
 
     0: [(1, 10), (5, 8)],
     1: [(2, 1), (3, -2)],
-    2: {},
-    3: {4: -1},
-    4: {5: -1},
-    5: {6: -1},
-    6: {7: 7}
+    2: [],
+    3: [(4, -1)],
+    4: [(5, -1)],
+    5: [(6, -1)],
+    6: [(0, 8)]
 
 }
 

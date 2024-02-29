@@ -8,7 +8,7 @@ def Neighbours(Adj_Mat : np.array, Value : int):
 
     for x in range(len(Adj_Mat[Value])):
 
-        if Adj_Mat[Value][x]:
+        if Adj_Mat[Value, x]:
 
             Neigh.append(x)
 

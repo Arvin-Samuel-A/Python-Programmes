@@ -43,9 +43,9 @@ def BFS_AM(Adj_Mat : np.array, Start : int):
 
         Var=Q.Get()
 
-        for y in range(Visited):
+        for y in Visited:
 
-            if (Adj_Mat[Var][y] and not Visited[y]):
+            if (Adj_Mat[Var, y] and not Visited[y]):
 
                 Level[y]=Level[Var]+1
                 Visited[y]=True

@@ -1,4 +1,4 @@
-import numpy as np
+"""import numpy as np
 
 def dijkstra(WMat,s):
     (rows, cols,x) = WMat.shape
@@ -53,4 +53,21 @@ for vertex, neighbors in W_Adj_List.items():
         W_Adj_Mat[vertex, neighbor, 1] = weight
 
 
-print(dijkstra(W_Adj_Mat, 0))
+print(dijkstra(W_Adj_Mat, 0))"""
+
+from Bellman_Ford_Algorithm import Bellman_Ford_Algorithm_WAL as BFA
+
+W_Adj_List={
+
+    1: [(2, 10), (8, 8)],
+    2: [(6, 2)],
+    3: [(2, 1), (4, 1)],
+    4: [(5, 3)],
+    5: [(6, -1)],
+    6: [(3, -2)],
+    7: [(2, -4), (6, -1)],
+    8: [(7, 1)]
+
+}
+
+print(BFA(W_Adj_List, 1))

@@ -68,6 +68,7 @@ def Prim_Algorithm_WAM(W_Adj_Mat : np.array):
     while(Closest is not None):
 
         Visited[Closest]=True
+        print(Closest)
 
         for x in range(len(W_Adj_Mat)):
 
@@ -127,7 +128,7 @@ if __name__=="__main__":
             W_Adj_Mat[vertex, neighbor, 1] = weight
 
     Prim_Algorithm_WAM(W_Adj_Mat)
-    print(Neighbour)
+    print(Neighbour, Distance)
 
     Prim_Algorithm_WAL(W_Adj_List)
     print(Neighbour)

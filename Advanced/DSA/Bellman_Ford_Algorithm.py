@@ -15,7 +15,7 @@ def WAM_Initialize(W_Adj_Mat : np.array):
 
 def WAL_Initialize(W_Adj_List : dict):
 
-    for x in W_Adj_List.keys():
+    for x in W_Adj_List:
 
         Distance[x]=float("inf")
 
@@ -41,7 +41,7 @@ def Bellman_Ford_Algorithm_WAM(W_Adj_Mat : np.array, Start : int):
     return Distance
 
 
-def Bellman_Ford_Algorithm_WAL(Adj_List : dict, Start : int):
+def Bellman_Ford_Algorithm_WAL(W_Adj_List : dict, Start : int):
 
     WAL_Initialize(W_Adj_List)
 

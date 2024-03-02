@@ -31,9 +31,9 @@ def WAM_Initialize(W_Adj_Mat : np.array):
     return
 
 
-def WAL_Initialize(Adj_List : dict):
+def WAL_Initialize(W_Adj_List : dict):
 
-    for x in Adj_List.keys():
+    for x in W_Adj_List:
 
         Distance[x]=float("inf")
         Visited[x]=False
@@ -64,9 +64,9 @@ def Dijkstra_Algorithm_WAM(W_Adj_Mat : np.array, Start : int):
     return Distance
 
 
-def Dijkstra_Algorithm_WAL(Adj_List : dict, Start : int):
+def Dijkstra_Algorithm_WAL(W_Adj_List : dict, Start : int):
 
-    WAL_Initialize(Adj_List)
+    WAL_Initialize(W_Adj_List)
 
     Distance[Start]=0
     
@@ -76,7 +76,7 @@ def Dijkstra_Algorithm_WAL(Adj_List : dict, Start : int):
 
         Visited[Closest]=True
 
-        for x in Adj_List[Closest]:
+        for x in W_Adj_List[Closest]:
 
             if(not Visited[x[0]]):
 

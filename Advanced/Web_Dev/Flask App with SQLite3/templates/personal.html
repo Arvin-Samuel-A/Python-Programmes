@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Home</title>
+    
+    <style>
+
+        div {
+
+            margin-top: 20px;
+            margin-bottom: 20px;
+
+        }
+
+        h1 {
+
+            text-align: center;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div>
+
+        <h1>Student Details</h1>
+
+        <table id = "personal-details">
+
+            <tr>
+
+                <th>Roll Number</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+
+            </tr>
+
+            <tr>
+
+                <td>{{Student["roll_number"]}}</td>
+                <td>{{Student["first_name"]}}</td>
+                <td>{{Student["last_name"]}}</td>
+
+            </tr>
+
+            </table>
+
+    </div>
+
+    <div>
+
+        <h1>Enrollment list</h1>
+
+        <table id = "enroll-table">
+
+            <tr>
+
+                <th>S. No.</th>
+                <th>Course Code</th>
+                <th>Course Name</th>
+                <th>Course Description</th>
+
+            </tr>
+
+            {%for Course in Courses%}
+
+            <tr>
+
+                <td>{{loop.counter}}</td>
+                <td>{{Course["course_code"]}}</td>
+                <td>{{Course["course_name"]}}</td>
+                <td>{{Course["course_description"]}}</td>
+
+            </tr>
+
+            {%endfor%}
+
+            </table>
+
+    </div>
+
+    <div style="margin-left: 150px;"><a href="/">Go Back</a></div>
+
+</body>
+
+</html>

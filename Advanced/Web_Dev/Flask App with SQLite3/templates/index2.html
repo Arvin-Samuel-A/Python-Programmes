@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Home</title>
+
+</head>
+
+<body>
+
+    <div>
+
+        <h1>Students list</h1>
+
+        <table id = "all-students">
+
+            <tr>
+
+                <th>SNo</th>
+                <th>Roll Number</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Actions</th>
+
+            </tr>
+
+            {%for Student in Students%}
+
+            <tr>
+
+                <td>{{Student["student_id"]}}</td>
+                <td><a href="/student/{{Student['student_id']}}">{{Student["roll_number"]}}</a></td>
+                <td>{{Student["first_name"]}}</td>
+                <td>{{Student["last_name"]}}</td>
+                <td>
+                <a href="/student/{{Student['student_id']}}/update" type="button">Update</a>
+                <a href="/student/{{Student['student_id']}}/delete" type="button">Delete</a>
+                </td>
+
+            </tr>
+
+            {%endfor%}
+
+        </table>
+        
+        <a href="/student/create" style="text-align: center;">+ Add Student</a>
+
+    </div>
+
+</body>
+
+</html>

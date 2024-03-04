@@ -66,7 +66,7 @@ def Create():
 
         roll_number = request.form.get("roll")
 
-        if Student.query.filter_by(roll_number=roll_number).first():
+        if Student.query.filter_by(roll_number=roll_number):
 
             return render_template("error.html")
         

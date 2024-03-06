@@ -75,4 +75,4 @@ W_Adj_List={
 print(BFA(W_Adj_List, 1))
 """
 
-print(bool([]))
+print([None])

@@ -1,6 +1,7 @@
 import numpy as np
+from Union_Find import Union_Find
 
-Edges, Component, Tree_Edges = [], {}, []
+Edges, Tree_Edges = [], []
 
 def WAM_Initialize(W_Adj_Mat : np.array):
 
@@ -16,12 +17,12 @@ def WAM_Initialize(W_Adj_Mat : np.array):
             if (W_Adj_Mat[x, y, 0]):
 
                 Edges.append((W_Adj_Mat[x, y, 1], x, y))
-        
-        Component[x]=x
 
     Edges.sort()
 
-    return
+    UF=Union_Find(range(Len))
+
+    return UF
 
 
 def WAL_Initialize(W_Adj_List : dict):
@@ -34,52 +35,40 @@ def WAL_Initialize(W_Adj_List : dict):
         for v, w in W_Adj_List[x]:
 
             Edges.append((w, x, v))
-        
-        Component[x]=x
 
     Edges.sort()
 
-    return
+    UF=Union_Find(W_Adj_List.keys())
+
+    return UF
 
 
 def Kruskal_Algorithm_WAM(W_Adj_Mat : np.array):
 
-    WAM_Initialize(W_Adj_Mat)
+    UF=WAM_Initialize(W_Adj_Mat)
 
     for w, x, y in Edges:
 
-        if (Component[x]!=Component[y]):
+        if (UF.find(x)!=UF.find(y)):
 
             Tree_Edges.append((x, y))
 
-            Var=Component[x]
-
-            for x in range(len(W_Adj_Mat)):
-
-                if (Component[x]==Var):
-
-                    Component[x]=Component[y]
+            UF.union(x, y)
 
     return Tree_Edges
 
 
 def Kruskal_Algorithm_WAL(W_Adj_List : dict):
 
-    WAL_Initialize(W_Adj_List)
+    UF=WAL_Initialize(W_Adj_List)
 
     for w, x, y in Edges:
 
-        if (Component[x]!=Component[y]):
+        if (UF.find(x)!=UF.find(y)):
 
             Tree_Edges.append((x, y))
 
-            Var=Component[x]
-
-            for z in W_Adj_List:
-
-                if Component[z]==Var:
-
-                    Component[z]=Component[y]
+            UF.union(x, y)
 
     return Tree_Edges
 

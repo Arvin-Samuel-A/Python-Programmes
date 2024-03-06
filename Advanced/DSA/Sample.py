@@ -55,6 +55,8 @@ for vertex, neighbors in W_Adj_List.items():
 
 print(dijkstra(W_Adj_Mat, 0))"""
 
+
+"""
 from Bellman_Ford_Algorithm import Bellman_Ford_Algorithm_WAL as BFA
 
 W_Adj_List={
@@ -71,3 +73,6 @@ W_Adj_List={
 }
 
 print(BFA(W_Adj_List, 1))
+"""
+
+print(bool([]))

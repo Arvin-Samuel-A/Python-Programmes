@@ -21,7 +21,7 @@ class Student(db.Model):
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String)
 
-    courses = db.relationship("Course", secondary="enrollments")
+    courses = db.relationship("Course", secondary="enrollments", cascade="all, delete")
 
 class Course(db.Model):
 
@@ -66,7 +66,7 @@ def Create():
 
         roll_number = request.form.get("roll")
 
-        if Student.query.filter_by(roll_number=roll_number):
+        if (Student.query.filter_by(roll_number=roll_number).count()):
 
             return render_template("error.html")
         
@@ -77,37 +77,25 @@ def Create():
 
         courses=request.form.getlist("courses")
 
-
         if "course_1" in courses:
 
-            course_1 = Course.query.filter_by(course_id="CSE01").first()
-
-            if course_1 is None:
-                print("Course 1 not found\n\n")
-
-            else:
-                print("Boooooooooooooom\n\n")
-                print(course_1)
-
-                for x in course_1:
-
-                    print(x)
+            course_1 = Course.query.filter_by(course_code="CSE01").first()
 
             student.courses.append(course_1)
 
         if "course_2" in courses:
 
-            course_2 = Course.query.filter_by(course_id="CSE02").first()
+            course_2 = Course.query.filter_by(course_code="CSE02").first()
             student.courses.append(course_2)
 
         if "course_3" in courses:
 
-            course_3 = Course.query.filter_by(course_id="CSE03").first()
+            course_3 = Course.query.filter_by(course_code="CSE03").first()
             student.courses.append(course_3)
 
         if "course_4" in courses:
 
-            course_4 = Course.query.filter_by(course_id="BST13").first()
+            course_4 = Course.query.filter_by(course_code="BST13").first()
             student.courses.append(course_4)
 
         db.session.add(student)
@@ -126,31 +114,31 @@ def Update(student_id):
 
     elif request.method == "POST":
 
-        student = Student.query.filter_by(student_id=student_id).first()
-
         student.first_name = request.form.get("f_name")
         student.last_name = request.form.get("l_name")
 
         courses=request.form.getlist("courses")
 
+        db.session.delete(Enrollments.query.filter_by(estudent_id=student_id))
+
         if "course_1" in courses:
 
-            course_1 = Course.query.filter_by(course_id="CSE01").first()
+            course_1 = Course.query.filter_by(course_code="CSE01").first()
             student.courses.append(course_1)
 
         if "course_2" in courses:
 
-            course_2 = Course.query.filter_by(course_id="CSE02").first()
+            course_2 = Course.query.filter_by(course_code="CSE02").first()
             student.courses.append(course_2)
 
         if "course_3" in courses:
 
-            course_3 = Course.query.filter_by(course_id="CSE03").first()
+            course_3 = Course.query.filter_by(course_code="CSE03").first()
             student.courses.append(course_3)
 
         if "course_4" in courses:
 
-            course_4 = Course.query.filter_by(course_id="BST13").first()
+            course_4 = Course.query.filter_by(course_code="BST13").first()
             student.courses.append(course_4)
 
         db.session.add(student)
@@ -177,4 +165,4 @@ def View(student_id):
 
 if __name__ == "__main__":
 
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

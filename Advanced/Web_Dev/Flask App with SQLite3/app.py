@@ -21,7 +21,7 @@ class Student(db.Model):
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String)
 
-    courses = db.relationship("Course", secondary="enrollments", cascade="all, delete")
+    courses = db.relationship("Course", secondary="enrollments")
 
 class Course(db.Model):
 
@@ -80,7 +80,6 @@ def Create():
         if "course_1" in courses:
 
             course_1 = Course.query.filter_by(course_code="CSE01").first()
-
             student.courses.append(course_1)
 
         if "course_2" in courses:
@@ -101,7 +100,8 @@ def Create():
         db.session.add(student)
         db.session.commit()
 
-        return redirect("/")
+        return redirect("/", code=200)
+    
 
 @app.route("/student/<int:student_id>/update", methods=["GET", "POST"])
 def Update(student_id):
@@ -119,7 +119,11 @@ def Update(student_id):
 
         courses=request.form.getlist("courses")
 
-        db.session.delete(Enrollments.query.filter_by(estudent_id=student_id))
+        enrollments = Enrollments.query.filter_by(estudent_id=student_id)
+
+        for x in enrollments:
+
+            db.session.delete(x)
 
         if "course_1" in courses:
 
@@ -144,7 +148,8 @@ def Update(student_id):
         db.session.add(student)
         db.session.commit()
 
-        return redirect("/")
+        return redirect("/", code=200)
+    
     
 @app.route("/student/<int:student_id>/delete")
 def Delete(student_id):
@@ -154,7 +159,8 @@ def Delete(student_id):
     db.session.delete(student)
     db.session.commit()
 
-    return redirect("/")
+    return redirect("/", code=200)
+
 
 @app.route("/student/<int:student_id>", methods=["GET", "POST"])
 def View(student_id):
@@ -162,6 +168,7 @@ def View(student_id):
     student = Student.query.filter_by(student_id=student_id).first()
 
     return render_template("personal.html", Student=student, Courses=student.courses)
+
 
 if __name__ == "__main__":
 

@@ -1,13 +1,15 @@
-class Binary_Search_Tree:
+class AVL_Tree:
 
     def __init__(self, Value = None):
 
         self.Value = Value
+        self.Height = 0
 
         if self.Value:
 
-            self.Left = Binary_Search_Tree()
-            self.Right = Binary_Search_Tree()
+            self.Left = AVL_Tree()
+            self.Right = AVL_Tree()
+            self.Height = 1
 
         else:
 
@@ -92,8 +94,11 @@ class Binary_Search_Tree:
         if (self.isempty()):
 
             self.Value = Value
-            self.Left = Binary_Search_Tree()
-            self.Right = Binary_Search_Tree()
+            self.Left = AVL_Tree()
+            self.Right = AVL_Tree()
+            self.Height = 1 + max(self.Left.Height, self.Right.Height)
+
+            self.Rebalance()
 
         if (self.Value==Value):
             
@@ -102,12 +107,18 @@ class Binary_Search_Tree:
         if (Value<self.Value):
             
             self.Left.Insert(Value)
+            self.Left.Rebalance()
+
+            self.Height = 1 + max(self.Left.Height, self.Right.Height)
 
             return
 
         else:
             
             self.Right.Insert(Value)
+            self.Right.Rebalance()
+
+            self.Height = 1 + max(self.Left.Height, self.Right.Height)
 
             return
         
@@ -121,12 +132,18 @@ class Binary_Search_Tree:
         if (Value<self.Value):
 
             self.Left.Delete(Value)
+            self.Left.Rebalance()
+
+            self.Height = 1 + max(self.Left.Height, self.Right.Height)
 
             return
         
         if (Value>self.Value):
 
             self.Right.Delete(Value)
+            self.Right.Rebalance()
+
+            self.Height = 1 + max(self.Left.Height, self.Right.Height)
 
             return
         
@@ -154,25 +171,95 @@ class Binary_Search_Tree:
             return
 
 
-    def Height(self):
+    def Left_Rotate(self):
 
-        if (self.isempty()):
+        Value = self.Value
+        Value_Right = self.Right.Value
 
-            return 0
-        
-        else:
+        Tree_Left = self.Left
+        Tree_Right_Left = self.Right.Left
+        Tree_Right_Right = self.Right.Right
 
-            Left_Height = self.Left.Height()
-            Right_Height = self.Right.Height()
+        New_Left = AVL_Tree(Value)
+        New_Left.Left = Tree_Left
+        New_Left.Right = Tree_Right_Left
 
-            if (Left_Height>Right_Height):
+        self.Value = Value_Right
+        self.Right = Tree_Right_Right
+        self.Left = New_Left
 
-                return Left_Height+1
+        New_Left.Height = 1 + max(New_Left.Left.Height, New_Left.Right.Height)
+        self.Height = 1 + max(self.Left.Height, self.Right.Height)
+
+        return
+    
+
+    def Right_Rotate(self):
+
+
+        Value = self.Value
+        Value_Left = self.Left.Value
+
+        Tree_Left_Left = self.Left.Left
+        Tree_Left_Right = self.Left.Right
+        Tree_Right = self.Right
+
+        New_Right = AVL_Tree(Value)
+        New_Right.Left = Tree_Left_Right
+        New_Right.Right = Tree_Right
+
+        self.Value = Value_Left
+        self.Left = Tree_Left_Left
+        self.Right = New_Right
+
+        New_Right.Height = 1 + max(New_Right.Left.Height, New_Right.Right.Height)
+        self.Height = 1 + max(self.Left.Height, self.Right.Height)
+
+        return
+            
+
+    def Rebalance(self):
+
+        Current_Slope = self.Left.Height - self.Right.Height
+
+        if (Current_Slope==2):
+
+            Tree_Left = self.Left
+            Slope_Left = Tree_Left.Left.Height - Tree_Left.Right.Height
+
+            if (Slope_Left==0 or Slope_Left==1):
+
+                self.Right_Rotate()
+
+                return
             
             else:
 
-                return Right_Height+1
+                Tree_Left.Left_Rotate()
+                self.Right_Rotate()
+
+                return
             
+        if (Current_Slope==-2):
+
+            Tree_Right = self.Right
+            Slope_Right = Tree_Right.Left.Height - Tree_Right.Right.Height
+
+            if (Slope_Right==0 or Slope_Right==1):
+
+                Tree_Right.Right_Rotate()
+                self.Left_Rotate()
+
+                return
+            
+            else:
+
+                self.Left_Rotate()
+
+                return
+            
+        return
+
 
     def isempty(self):
 
@@ -187,7 +274,7 @@ class Binary_Search_Tree:
     def Make_Empty(self):
 
         self.Value = None
-
+        self.Height = 0
         self.Left = None
         self.Right = None
 
@@ -197,7 +284,7 @@ class Binary_Search_Tree:
     def Copy_Left(self):
 
         self.Value = self.Left.Value
-
+        self.Height = self.Left.Height
         self.Right = self.Left.Right
         self.Left = self.Left.Left
 
@@ -207,7 +294,7 @@ class Binary_Search_Tree:
     def Copy_Right(self):
 
         self.Value = self.Right.Value
-        
+        self.Height = self.Right.Height
         self.Left = self.Right.Left
         self.Right = self.Right.Right
 

@@ -46,12 +46,8 @@ def index():
 
     students=Student.query.all()
     count=Student.query.count()
-
-    if count==0:
-
-        return render_template("index1.html")
         
-    return render_template("index2.html", Students=students)
+    return render_template("index.html", Students=students, Count=count)
 
 
 @app.route("/student/create", methods=["GET", "POST"])
@@ -100,7 +96,7 @@ def Create():
         db.session.add(student)
         db.session.commit()
 
-        return redirect("/", code=200)
+        return redirect("/")
     
 
 @app.route("/student/<int:student_id>/update", methods=["GET", "POST"])
@@ -148,7 +144,7 @@ def Update(student_id):
         db.session.add(student)
         db.session.commit()
 
-        return redirect("/", code=200)
+        return redirect("/")
     
     
 @app.route("/student/<int:student_id>/delete")
@@ -159,7 +155,7 @@ def Delete(student_id):
     db.session.delete(student)
     db.session.commit()
 
-    return redirect("/", code=200)
+    return redirect("/")
 
 
 @app.route("/student/<int:student_id>", methods=["GET", "POST"])

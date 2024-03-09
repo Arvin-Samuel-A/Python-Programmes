@@ -13,6 +13,8 @@
 
         <h1>Students list</h1>
 
+        {%if Count%}
+
         <table id = "all-students">
 
             <tr>
@@ -29,7 +31,7 @@
 
             <tr>
 
-                <td>{{Student["student_id"]}}</td>
+                <td>{{loop.index}}</td>
                 <td><a href="/student/{{Student['student_id']}}">{{Student["roll_number"]}}</a></td>
                 <td>{{Student["first_name"]}}</td>
                 <td>{{Student["last_name"]}}</td>
@@ -43,8 +45,14 @@
             {%endfor%}
 
         </table>
+
+        {%else%}
+
+        <div>No student found. Add the students now!</div>
+
+        {%endif%}
         
-        <a href="/student/create" style="text-align: center;">+ Add Student</a>
+        <div style="margin-left: 120px;"><a href="/student/create">+ Add Student</a></div>
 
     </div>
 

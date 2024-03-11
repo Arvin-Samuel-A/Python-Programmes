@@ -141,7 +141,9 @@ class API_Course(Resource):
         db.session.delete(course)
         db.session.commit()
 
-        return
+        response = make_response("", 200)
+
+        return response
     
     @marshal_with(Course_Output)
     def post(self):
@@ -151,10 +153,6 @@ class API_Course(Resource):
         course_description = request.json["course_description"]
 
         course = Course.query.filter_by(course_code=course_code).first()
-
-        if course is not None:
-
-            return NotFoundError(409)
         
         if (course_name is None):
 
@@ -164,14 +162,16 @@ class API_Course(Resource):
 
             raise InputError(400, "COURSE002", "Course Code is required")
         
+        if course is not None:
+
+            raise NotFoundError(409)
+        
         course = Course(course_name=course_name, course_code=course_code, course_description=course_description)
 
         db.session.add(course)
         db.session.commit()
 
-        course = Course.query.filter_by(course_code=course_code)
-
-        return course
+        return course, 201
 
 
 

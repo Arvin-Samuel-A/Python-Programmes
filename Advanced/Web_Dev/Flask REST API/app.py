@@ -173,7 +173,90 @@ class API_Course(Resource):
 
         return course, 201
 
+class API_Student(Resource):
 
+    @marshal_with(Student_Output)
+    def get(self, student_id):
+
+        student = Student.query.filter_by(student_id=student_id).first()
+
+        if (student is None):
+
+            raise NotFoundError(404)
+        
+        return student
+    
+    @marshal_with(Student_Output)
+    def put(self, student_id):
+
+        student = Student.query.filter_by(student_id=student_id).first()
+
+        if (student is None):
+
+            raise NotFoundError(404)
+        
+        roll_number = request.json["roll_number"]
+        first_name = request.json["first_name"]
+        last_name = request.json["last_name"]
+
+        if (roll_number is None):
+
+            raise InputError(400, "STUDENT001", "Roll Number required")
+        
+        if (first_name is None):
+
+            raise InputError(400, "STUDENT002", "FIrst Name is required")
+        
+        student.roll_number = roll_number
+        student.first_name = first_name
+        student.last_name = last_name
+
+        db.session.commit()
+
+        return student
+    
+    def delete(self, student_id):
+
+        student = Student.query.filter_by(student_id=student_id).first()
+
+        if (student is None):
+
+            raise NotFoundError(404)
+        
+        db.session.delete(student)
+        db.session.commit()
+
+        response = make_response("", 200)
+
+        return response
+    
+    @marshal_with(Student_Output)
+    def post(self):
+
+        roll_number = request.json["roll_number"]
+        first_name = request.json["first_name"]
+        last_name = request.json["last_name"]
+
+        student = Student.query.filter_by(roll_number=roll_number).first()
+        
+        if (roll_number is None):
+
+            raise InputError(400, "STUDENT001", "Roll Number required")
+        
+        if (first_name is None):
+
+            raise InputError(400, "STUDENT002", "FIrst Name is required")
+        
+        if student is not None:
+
+            raise NotFoundError(409)
+        
+        student = Student(roll_number=roll_number, first_name=first_name, last_name=last_name)
+
+        db.session.add(student)
+        db.session.commit()
+
+        return student, 201
 
         
         
@@ -181,7 +264,7 @@ class API_Course(Resource):
 
 
 api.add_resource(API_Course, "/api/course/<int:course_id>", "/api/course")
-#api.add_resource(API_Student, "/api/student/<int:student_id>", "/api/student")
+api.add_resource(API_Student, "/api/student/<int:student_id>", "/api/student")
 #api.add_resource(API_Enrollments, "/api/student/<int:student_id>/course", "/api/student/<int:student_id>/course/<int:course_id")
 
 if __name__ == "__main__":

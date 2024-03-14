@@ -1,7 +1,6 @@
 from flask import Flask, request, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, Api, fields, marshal_with
-from werkzeug.exceptions import HTTPException
 
 import os
 from flask_cors import CORS
@@ -10,7 +9,7 @@ current_dir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 CORS(app)
 Var=os.path.join(current_dir, "api_database.sqlite3")
-print(Var)
+
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///"+Var
 
 db = SQLAlchemy()
@@ -50,23 +49,10 @@ class Enrollments(db.Model):
     __tablename__ = "enrollments"
 
     enrollment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    student_id = db.Column(db.Integer, db.ForeignKey("student.student_id", ondelete="CASCADE"), nullable=False)
-    course_id = db.Column(db.Integer, db.ForeignKey("course.course_id", ondelete="CASCADE"), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey("student.student_id"), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey("course.course_id"), nullable=False)
 
 
-
-class NotFoundError(HTTPException):
-
-    def __init__(self, status_code):
-
-        self.response = make_response("", status_code)
-
-
-class InputError(HTTPException):
-
-    def __init__(self, status_code, error_code, error_message):
-
-        self.response = make_response({"error_code": error_code, "error_message": error_message}, status_code)
 
 
 Course_Output = {
@@ -87,40 +73,78 @@ Student_Output = {
 
 }
 
+Enrollment_Output = {
+
+    "enrollment_id" : fields.Integer,
+    "student_id" : fields.Integer,
+    "course_id" : fields.Integer
+
+}
+
 
 class API_Course(Resource):
 
-    @marshal_with(Course_Output)
     def get(self, course_id):
 
         course = Course.query.filter_by(course_id=course_id).first()
 
         if (course is None):
 
-            raise NotFoundError(404)
+            response = make_response("", 404)
+
+            return response
         
-        return course
+        return self.Format(course)
     
-    @marshal_with(Course_Output)
     def put(self, course_id):
 
         course = Course.query.filter_by(course_id=course_id).first()
 
         if (course is None):
 
-            raise NotFoundError(404)
+            response = make_response("", 404)
+
+            return response
         
-        course_name = request.json["course_name"]
-        course_code = request.json["course_code"]
-        course_description = request.json["course_description"]
+        try:
 
-        if (course_name is None):
+            course_name = request.json["course_name"]
 
-            raise InputError(400, "COURSE001", "Course Name is required")
+            if (course_name is None):
+
+                response = make_response({"error_code": "COURSE001", "error_message": "Course Name is required"}, 400)
+
+                return response
+
+        except:
+
+            response = make_response({"error_code": "COURSE001", "error_message": "Course Name is required"}, 400)
+
+            return response
+
+        try:
+
+            course_code = request.json["course_code"]
+
+            if (course_code is None):
+
+                response = make_response({"error_code": "COURSE002", "error_message": "Course Code is required"}, 400)
+
+                return response
+
+        except:
+
+            response = make_response({"error_code": "COURSE002", "error_message": "Course Code is required"}, 400)
+
+            return response
         
-        if (course_code is None):
+        try:
+                    
+            course_description = request.json["course_description"]
 
-            raise InputError(400, "COURSE002", "Course Code is required")
+        except:
+
+            pass
         
         course.course_name = course_name
         course.course_code = course_code
@@ -128,7 +152,7 @@ class API_Course(Resource):
 
         db.session.commit()
 
-        return course
+        return self.Format(course)
     
     def delete(self, course_id):
 
@@ -136,7 +160,9 @@ class API_Course(Resource):
 
         if (course is None):
 
-            raise NotFoundError(404)
+            response = make_response("", 404)
+
+            return response
         
         db.session.delete(course)
         db.session.commit()
@@ -145,67 +171,143 @@ class API_Course(Resource):
 
         return response
     
-    @marshal_with(Course_Output)
     def post(self):
 
-        course_name = request.json["course_name"]
-        course_code = request.json["course_code"]
-        course_description = request.json["course_description"]
+        try:
+
+            course_name = request.json["course_name"]
+
+            if (course_name is None):
+
+                response = make_response({"error_code": "COURSE001", "error_message": "Course Name is required"}, 400)
+
+                return response
+
+        except:
+
+            response = make_response({"error_code": "COURSE001", "error_message": "Course Name is required"}, 400)
+
+            return response
+
+        try:
+
+            course_code = request.json["course_code"]
+
+            if (course_code is None):
+
+                response = make_response({"error_code": "COURSE002", "error_message": "Course Code is required"}, 400)
+
+                return response
+
+        except:
+
+            response = make_response({"error_code": "COURSE002", "error_message": "Course Code is required"}, 400)
+
+            return response
+        
+        try:
+                    
+            course_description = request.json["course_description"]
+
+        except:
+
+            pass
 
         course = Course.query.filter_by(course_code=course_code).first()
         
-        if (course_name is None):
-
-            raise InputError(400, "COURSE001", "Course Name is required")
-        
-        if (course_code is None):
-
-            raise InputError(400, "COURSE002", "Course Code is required")
-        
         if course is not None:
 
-            raise NotFoundError(409)
+            response = make_response("", 409)
+
+            return response
         
         course = Course(course_name=course_name, course_code=course_code, course_description=course_description)
 
         db.session.add(course)
         db.session.commit()
 
-        return course, 201
+        return self.Format(course), 201
+
+    @marshal_with(Course_Output)
+    def Format(self, Obj):
+
+        return Obj
 
 class API_Student(Resource):
 
-    @marshal_with(Student_Output)
     def get(self, student_id):
 
         student = Student.query.filter_by(student_id=student_id).first()
 
         if (student is None):
 
-            raise NotFoundError(404)
+            response = make_response("", 404)
+
+            return response
         
-        return student
+        return self.Format(student)
     
-    @marshal_with(Student_Output)
     def put(self, student_id):
 
         student = Student.query.filter_by(student_id=student_id).first()
 
         if (student is None):
 
-            raise NotFoundError(404)
+            response = make_response("", 404)
+
+            return response
         
-        roll_number = request.json["roll_number"]
-        first_name = request.json["first_name"]
-        last_name = request.json["last_name"]
+        try:
+
+            roll_number = request.json["roll_number"]
+
+            if (roll_number is None):
+
+                response = make_response({"error_code": "STUDENT001", "error_message": "Roll Number required"}, 400)
+
+                return response
+
+        except:
+
+            response = make_response({"error_code": "STUDENT001", "error_message": "Roll Number required"}, 400)
+
+            return response
+        
+        try:
+
+            first_name = request.json["first_name"]
+
+            if (first_name is None):
+
+                response = make_response({"error_code": "STUDENT002", "error_message": "First Name is required"}, 400)
+
+                return response
+
+        except:
+
+            response = make_response({"error_code": "STUDENT002", "error_message": "First Name is required"}, 400)
+
+            return response
+
+        try:
+
+            last_name = request.json["last_name"]
+
+        except:
+
+            pass
 
         if (roll_number is None):
+            
+            response = make_response({"error_code": "STUDENT001", "error_message": "Roll Number required"}, 400)
 
-            raise InputError(400, "STUDENT001", "Roll Number required")
+            return response
         
         if (first_name is None):
+            
+            response = make_response({"error_code": "STUDENT002", "error_message": "First Name is required"}, 400)
 
-            raise InputError(400, "STUDENT002", "FIrst Name is required")
+            return response
         
         student.roll_number = roll_number
         student.first_name = first_name
@@ -213,16 +315,28 @@ class API_Student(Resource):
 
         db.session.commit()
 
-        return student
+        return self.Format(student)
     
     def delete(self, student_id):
 
         student = Student.query.filter_by(student_id=student_id).first()
+        enrollments = Enrollments.query.filter_by(student_id=student_id)
 
         if (student is None):
 
-            raise NotFoundError(404)
+            response = make_response("", 404)
+
+            return response
         
+        if (enrollments.first() is not None):
+        
+            for enrollment in enrollments:
+
+                db.session.delete(enrollment)
+            
+            db.session.flush()
+
+
         db.session.delete(student)
         db.session.commit()
 
@@ -230,42 +344,177 @@ class API_Student(Resource):
 
         return response
     
-    @marshal_with(Student_Output)
     def post(self):
 
-        roll_number = request.json["roll_number"]
-        first_name = request.json["first_name"]
-        last_name = request.json["last_name"]
+        try:
+
+            roll_number = request.json["roll_number"]
+
+            if (roll_number is None):
+
+                response = make_response({"error_code": "STUDENT001", "error_message": "Roll Number required"}, 400)
+
+                return response
+
+        except:
+
+            response = make_response({"error_code": "STUDENT001", "error_message": "Roll Number required"}, 400)
+
+            return response
+        
+        try:
+
+            first_name = request.json["first_name"]
+
+            if (first_name is None):
+
+                response = make_response({"error_code": "STUDENT002", "error_message": "First Name is required"}, 400)
+
+                return response
+
+        except:
+
+            response = make_response({"error_code": "STUDENT002", "error_message": "First Name is required"}, 400)
+
+            return response
+
+        try:
+
+            last_name = request.json["last_name"]
+
+        except:
+
+            pass
 
         student = Student.query.filter_by(roll_number=roll_number).first()
         
-        if (roll_number is None):
-
-            raise InputError(400, "STUDENT001", "Roll Number required")
-        
-        if (first_name is None):
-
-            raise InputError(400, "STUDENT002", "FIrst Name is required")
-        
         if student is not None:
 
-            raise NotFoundError(409)
+            response = make_response("", 409)
+
+            return response
         
         student = Student(roll_number=roll_number, first_name=first_name, last_name=last_name)
 
         db.session.add(student)
         db.session.commit()
 
-        return student, 201
+        return self.Format(student), 201
 
+    @marshal_with(Student_Output)
+    def Format(self, Obj):
+
+        return Obj
+
+class API_Enrollments(Resource):
+
+    def get(self, student_id):
+
+        student = Student.query.filter_by(student_id=student_id).first()
+
+        if (student is None):
+
+            response = make_response({"error_code": "ENROLLMENT002", "error_message": "Student does not exist"}, 400)
+
+            return response
+
+        enrollments = Enrollments.query.filter_by(student_id=student_id)
+
+        if (enrollments.first() is None):
+
+            response = make_response("", 404)
+
+            return response
+
+        Response = []
         
+        for x in enrollments:
+
+            Response.append(self.Format(x))
+
+        return Response, 200
+    
+    def post(self, student_id):
+
+        student = Student.query.filter_by(student_id=student_id).first()
+
+        if (student is None):
+
+            response = make_response("", 404)
+
+            return response
         
+        course_id = request.json["course_id"]
+
+        course = Course.query.filter_by(course_id=course_id).first()
+
+        if (course is None):
+
+            response = make_response({"error_code": "ENROLLMENT001", "error_message": "Course does not exist"}, 400)
+
+            return response
+
+        enrollments = Enrollments.query.filter_by(student_id=student_id)
+        new_enrollment = Enrollments(student_id=student_id, course_id=course_id)
+
+        db.session.add(new_enrollment)
+        db.session.commit()
+
+        Response = []
+        
+        for x in enrollments:
+
+            Response.append(self.Format(x))
+
+        return Response, 201
+
+    def delete(self, student_id, course_id):
+
+        student = Student.query.filter_by(student_id=student_id).first()
+
+        if (student is None):
+
+            response = make_response({"error_code": "ENROLLMENT002", "error_message": "Student does not exist"}, 400)
+
+            return response
+        
+        course = Course.query.filter_by(course_id=course_id).first()
+
+        if (course is None):
+
+            response = make_response({"error_code": "ENROLLMENT001", "error_message": "Course does not exist"}, 400)
+
+            return response
+
+        enrollments = Enrollments.query.filter(Enrollments.student_id==student_id and Enrollments.course_id==course_id)
+
+        if (enrollments.first() is None):
+
+            response = make_response("", 404)
+
+            return response
+
+        for enrollment in enrollments:
+
+            db.session.delete(enrollment)
+
+        db.session.commit()
+
+        response = make_response("", 200)
+
+        return response
+        
+
+    @marshal_with(Enrollment_Output)
+    def Format(self, Obj):
+
+        return Obj
 
 
 
 api.add_resource(API_Course, "/api/course/<int:course_id>", "/api/course")
 api.add_resource(API_Student, "/api/student/<int:student_id>", "/api/student")
-#api.add_resource(API_Enrollments, "/api/student/<int:student_id>/course", "/api/student/<int:student_id>/course/<int:course_id")
+api.add_resource(API_Enrollments, "/api/student/<int:student_id>/course", "/api/student/<int:student_id>/course/<int:course_id>")
 
 if __name__ == "__main__":
 

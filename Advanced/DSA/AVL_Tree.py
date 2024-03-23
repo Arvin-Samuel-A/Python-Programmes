@@ -34,7 +34,7 @@ class AVL_Tree:
 
         if (self.isempty()):
 
-            return [None]
+            return []
         
         else:
 
@@ -107,7 +107,7 @@ class AVL_Tree:
         if (Value<self.Value):
             
             self.Left.Insert(Value)
-            self.Left.Rebalance()
+            self.Rebalance()
 
             self.Height = 1 + max(self.Left.Height, self.Right.Height)
 
@@ -116,7 +116,7 @@ class AVL_Tree:
         else:
             
             self.Right.Insert(Value)
-            self.Right.Rebalance()
+            self.Rebalance()
 
             self.Height = 1 + max(self.Left.Height, self.Right.Height)
 
@@ -132,7 +132,7 @@ class AVL_Tree:
         if (Value<self.Value):
 
             self.Left.Delete(Value)
-            self.Left.Rebalance()
+            self.Rebalance()
 
             self.Height = 1 + max(self.Left.Height, self.Right.Height)
 
@@ -141,7 +141,7 @@ class AVL_Tree:
         if (Value>self.Value):
 
             self.Right.Delete(Value)
-            self.Right.Rebalance()
+            self.Rebalance()
 
             self.Height = 1 + max(self.Left.Height, self.Right.Height)
 
@@ -304,3 +304,16 @@ class AVL_Tree:
     def __str__(self):
 
         return str(self.Inorder())
+
+
+if __name__ == "__main__":
+
+    Tree = AVL_Tree(5)
+    Tree.Insert(3)
+    Tree.Insert(6)
+    Tree.Insert(2)
+    Tree.Insert(4)
+    Tree.Insert(7)
+    Tree.Insert(1)
+
+    print(Tree.Pre_Order())

@@ -32,7 +32,7 @@ class Binary_Search_Tree:
 
         if (self.isempty()):
 
-            return [None]
+            return []
         
         else:
 

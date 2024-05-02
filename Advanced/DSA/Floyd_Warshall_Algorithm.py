@@ -1,6 +1,6 @@
 import numpy as np
 
-def Initialize(W_Adj_Mat : np.array):
+def Initialize(W_Adj_Mat : np.ndarray):
 
     (Rows, Cols, x)=W_Adj_Mat.shape
 
@@ -17,7 +17,7 @@ def Initialize(W_Adj_Mat : np.array):
     return Shortest_Path
 
 
-def Floyd_Warshall_Algorithm(W_Adj_Mat : np.array):
+def Floyd_Warshall_Algorithm(W_Adj_Mat : np.ndarray):
 
     Shortest_Path=Initialize(W_Adj_Mat)
 

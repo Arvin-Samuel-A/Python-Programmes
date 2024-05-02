@@ -3,7 +3,7 @@ from Union_Find import Union_Find
 
 Edges, Tree_Edges = [], []
 
-def WAM_Initialize(W_Adj_Mat : np.array):
+def WAM_Initialize(W_Adj_Mat : np.ndarray):
 
     Edges.clear()
     Tree_Edges.clear()
@@ -43,7 +43,7 @@ def WAL_Initialize(W_Adj_List : dict):
     return UF
 
 
-def Kruskal_Algorithm_WAM(W_Adj_Mat : np.array):
+def Kruskal_Algorithm_WAM(W_Adj_Mat : np.ndarray):
 
     UF=WAM_Initialize(W_Adj_Mat)
 

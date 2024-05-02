@@ -19,7 +19,7 @@ def Closest_Neighbour():
     return Closest
 
 
-def WAM_Initialize(W_Adj_Mat : np.array):
+def WAM_Initialize(W_Adj_Mat : np.ndarray):
 
     (Rows, Cols, x)=W_Adj_Mat.shape
 
@@ -59,7 +59,7 @@ def WAL_Initialize(W_Adj_List : dict):
     return
 
 
-def Prim_Algorithm_WAM(W_Adj_Mat : np.array):
+def Prim_Algorithm_WAM(W_Adj_Mat : np.ndarray):
 
     WAM_Initialize(W_Adj_Mat)
 
@@ -68,7 +68,6 @@ def Prim_Algorithm_WAM(W_Adj_Mat : np.array):
     while(Closest is not None):
 
         Visited[Closest]=True
-        print(Closest)
 
         for x in range(len(W_Adj_Mat)):
 

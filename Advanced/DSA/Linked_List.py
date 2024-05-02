@@ -61,14 +61,14 @@ class Node:
                 self.Value=self.Next.Value
                 self.Next=self.Next.Next
 
-            else:
+        else:
 
-                if self.Next!=None:
+            if self.Next!=None:
 
-                    self.Next.delete(Value)
+                self.Next.delete(Value)
 
-                    if self.Next.Value==None:
+                if self.Next.Value==None:
 
-                        self.Next=None
+                    self.Next=None
 
         return

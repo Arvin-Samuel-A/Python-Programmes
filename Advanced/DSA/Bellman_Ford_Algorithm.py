@@ -2,7 +2,7 @@ import numpy as np
 
 Distance = {}
 
-def WAM_Initialize(W_Adj_Mat : np.array):
+def WAM_Initialize(W_Adj_Mat : np.ndarray):
 
     (Rows, Cols, x)=W_Adj_Mat.shape
 
@@ -22,7 +22,7 @@ def WAL_Initialize(W_Adj_List : dict):
     return
 
 
-def Bellman_Ford_Algorithm_WAM(W_Adj_Mat : np.array, Start : int):
+def Bellman_Ford_Algorithm_WAM(W_Adj_Mat : np.ndarray, Start : int):
 
     WAM_Initialize(W_Adj_Mat)
 

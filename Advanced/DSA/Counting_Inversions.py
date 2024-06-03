@@ -55,3 +55,4 @@ def Sort_Count(List : list):
     (Result, Count_Final) = Merge_Count(Left, Right)
 
     return (Result, Count_Left+Count_Right+Count_Final)
+
